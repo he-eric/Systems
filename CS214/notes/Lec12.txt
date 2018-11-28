@@ -1,0 +1,22 @@
+Midterm
+basic Unix = ls, cd, man, echo, >, ps, 
+      	     top, etc, touch, chmod, wc, lopen
+
+C preprocessor
+malloc/free - use and implementation
+
+File process stuff
+open/read/write/close - file descriptor
+fopen/fread/fwrite/fclose - file pointers
+
+open-lower level; network communication; interface for sockets
+fopen-different interface; can use fscanf
+
+perror(const char *) prints your string then errno string
+
+DIR dirp = *opendir(const char * path);	  
+modified directory while accessing directory - undefined
+close(dirp)
+readdir()	
+  
+fts - file traversal

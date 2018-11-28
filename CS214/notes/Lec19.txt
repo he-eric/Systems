@@ -1,0 +1,56 @@
+What is a deadlock?
+Two locks waiting for each other
+Two or more threads blocked waiting for something to happen where each thread
+holds a resource that another thread is waiting for lol
+-mutual exclusion if i have this resource no one else can have it
+-hold while waiting
+-no preemption must be explicitly told to let go
+-circular wait
+
+the difference between a semaphore and a mutex
+semaphore is older 
+post-increases value of semaphore
+    -block at max
+wait-decreases value of semaphore
+    -block at min
+
+mutex
+lock-acquire resource
+    -block if acquired
+unlock-release resource
+    -generally never blocks since only thread with resource can release
+
+which one is better?
+is one better?
+
+unlock a unlocked resource
+undefined
+
+who provides semaphores mutex
+OS provide global semaphores
+mutexes not really
+
+whats a monitor
+particular data structure protected by a mutex/semaphore
+global variable happiness
+a mutex to guard happiness
+to ensure change of variable comes with unlocking mutex
+increase_happiness()
+decrease_happiness()
+functions monitor variable
+
+client
+netserverinit
+netopen
+netclose
+netread
+netwrite
+
+connection strategy
+  1 connection per command
+     lots of overhead, constantly open/close
+  1 connection per open file
+  1 connection per program
+     first netopen open connection
+     last file closed close connection 
+     

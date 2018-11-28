@@ -1,0 +1,38 @@
+void foo(int n, int array[]) { //Really passing a pointer 
+     sizeof(array) //size of the pointer array
+}
+
+Global/Local variable instead of 
+int array[5];
+sizeof(array); //20
+
+int *array = malloc(sizeof(int)*5);
+sizeof(array); //8
+
+Overhead
+Memory for metadata, processes
+
+Reduce overhead
+Malloc chunk of bytes
+Have one header for metadata which reduces overhead
+Allocation pool - constant time, nearly zero overhead
+If out of space malloc more
+But the caveat is that malloc is called in the worst case scenario 
+So 1 chunk of allocated memory with 1 header - low overhead
+Useful for linked list, binary tree, specialized memory
+
+Processes, fork
+process-running program with 1.code 2.state
+ps - list current processes associated with your user
+top - list all processes on machine
+kill -9 pid# //kills anything lul
+
+exec - replace current process with new process
+fork - clone current process, returns twice
+differences: address space, process ids,
+same: file descriptors, signal handlers
+
+shell forks and its child execs process
+return values: 0 or child pid
+
+unistd.h standard unix 

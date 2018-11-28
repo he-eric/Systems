@@ -1,0 +1,76 @@
+OSI Network model - seven layers
+physical - 
+link - abstract communication
+     machines connected on a link
+network - IP communication between networks
+transport - communication between processes on different machinese
+	  TCP UDP SCTP
+
+session
+	responsible for: when do we start talking? details for comm
+	setup, teardown, sync, communication across diff ports
+	Extension B: data sent to multiple ports
+
+presentation
+	binary formatting of messages
+
+application
+	abstract
+	read 500 bytes from fd -5
+
+in the presentation layer decide how to express command read
+many possible presentations for the same application
+
+ex: comm be encrypted
+    encrpyt 
+
+session: coordination
+
+read(-5, buf, 800)
+
+"read -5 buf 800"
+
+Physical
+Ethernet/Link Headers - 
+IP Headers - which machine message goes to, message size
+TCP Headers - port, sequence #s
+Message
+
+Unlike the 4level internet model these are abstract
+
+Fault models
+failstop - processors fail - another processor will notice
+crash - processor fail - not detectable to other processors
+byzantine - processor fails by arbitrary behavior
+	  something goes wrong anything happens
+	  instead of getting no response may get wrong response
+
+can extend fault models to distributed systems
+
+project:
+	server - accepts response, sends response
+	client - request, get response
+
+if server enters infinite loop how does client know
+client doesnt know 
+
+failstop - get an error from server 
+	 server isnt running
+crash - server crashes connection closes
+byzantine - server gets itself into an inconsistent state
+	  
+thus no network is reliable
+live with degree of uncertainty
+
+int main() {
+    fork() 2 processes call fork() 4 times
+    fork() 4 processes call fork() 3 times
+    fork()  
+    fork() 
+    fork() 
+    
+    char **args = {"arg1", "arg2", "arg3",...};
+    execv("my_client",args);
+}
+
+

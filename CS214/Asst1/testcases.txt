@@ -1,0 +1,38 @@
+Both workload E and F models workload C and D. Workloads C and D randomly chooses between
+malloc'ing a 1-64 byte pointer or free'ing a pointer. Workloads E and F follows the same
+testing except they also randomly choose a pointer to free.
+
+The following describes each workload
+
+Workload E
+1. Create an array which can hold 150 char pointers
+2. Malloc 150 char pointers of size 1 byte to fill the array
+3. Free 75 randomly chosen pointers in the array by randomly choosing an index
+   3a. Set each freed pointer to NULL as a way to keep track of freed pointers
+4. Malloc 75 randomly chosen pointers in the array by randomly choosing an index.
+   4a. If the chosen index is already malloc'ed, ignore and move on until 75 indexes
+   have been chosen randomly. 
+5. Free the remaining malloc'd pointers
+
+Workload F
+1. Create an array which can hold 150 char pointers
+2. Malloc 150 char pointers of random size (between 1 and 64 bytes) to fill the array
+3. Free	75 randomly chosen pointers in the array by randomly choosing an index
+   3a. Set each freed pointer to NULL as a way to keep track of	freed pointers
+4. Malloc 75 randomly chosen pointers in the array by randomly choosing an index
+   4a. If the chosen index is already malloc'ed, ignore and move on until 75 indexes
+   have been chosen randomly.
+5. Free	the remaining malloc'd pointers
+
+These two workloads are designed to test the effectiveness of our coalesce method. We use 
+deferred coalescing. We scan the heap when a malloc call fails, coalescing all free blocks.
+By randomly choosing which pointers to free, we enhance the possibility of false 
+fragmentation. Such an increase in fragmentation would increase the need for our coalesce
+to run since our malloc calls would fail more often.
+
+   We note that our workload F mallocs 150 char pointers of random size 1-64 bytes in a 
+row. Our worst case scenario mallocs 64 bytes 150 times. This is beyond the capacity of our
+simulated heap memory size. Thus errors pertaining to size will be called often since we
+are running our workload 100 times. 
+    Errors pertaining to free may be called as well since it is not guaranteed that every 
+char pointer in the array will be malloc'd. It may be the case that we have reached maximum allocation by the 130th char pointer. Then it is possible that during our process of choosing a random pointer to free, we may attempt to free a garbage value outside the memory location of our heap which would trigger a memory out of bounds error.  

@@ -1,0 +1,33 @@
+n % 4 = n & 3
+    n
+& 0011
+______
+Saves last 2 bits of n
+
+Negative modulo
+-5 % 4 =  3 + 4 * -2 
+       = -1 + 4 * -1
+
+Predefined Makefile Commands
+$@ name of current target
+$^ all prerequesites
+$< the first prerequesite
+%.o: %.c - Any name ending in .o depends on .c
+
+gcc -M example.c --- list dependencies
+
+<string.h>
+if ( !ptr ) {
+   perror(errno);
+   printf("%s\n", strerror(errno));
+}
+
+file descriptor
+array index of file - 0 1 2 taken
+
+ssize_t read (int fd,       void *buf, size_t count);
+ssize_t write(int fd, const void *buf, size_t count);
+Read/write count bytes from/to fd to/from buf
+Read/write does not include null byte
+
+stdinput line buffered--read takes 1 line 

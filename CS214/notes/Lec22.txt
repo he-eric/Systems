@@ -1,0 +1,48 @@
+Internet four layer model
+Application - HTTP: SMTP; FTP;
+Transport --- TCP; UDP; SCTP; DCCP
+Network ----- Internet; IP
+Link -------- Ethernet; WiFI
+
+OSI seven layer model
+
+Addresses - identify something
+On the link layer; ethernet network every machine has id called MAC
+Network layer; --- IP addresses xxx.xxx.xxx.xxx
+Transport -------- address at TCP; UDP level called port; 128.1.1.1:portno
+Application ------ address specific to application SMTP: emailaddress
+------------------ address specific to HTTP: url: www.xxx.com
+
+scheme ids
+http: - scheme id: everything after this is http scheme address
+mailto:
+ftp:
+
+why lisp.cs.rutgers.edu <-> 128.1.1.1 because easy to remember
+domain name series of names ended by periods
+arranged in order from most specific to least specific
+last component of domain name is the top level domain
+edu
+com
+gov
+org
+us, ru, br...
+
+A for address; ip address
+
+query lisa.cs.rutgers.edu
+local domain name server -> its dns -> ... -> edu dns
+until A record is found
+
+getaddrinfo("www.xxx.com", "portno", ...) -> talk to dns server
+why is a portno involved
+dont have to; just give service name: SMTP
+sockaddress struct will fill out portno given service name
+
+socket(protocol domain, type, protocol) return an integer!
+-----------get back a file descriptor
+-----------but what are file descriptor? what does it mean to hold a fd?
+-----it means its something I can use for read write close
+-----a fd can be seen as a place; a object
+--read(7, buf, amount) look up 7 in table
+--

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fileIndex>
+	<word text="amyp">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="cat">
+		<file name="d">3</file>
+		<file name="g">3</file>
+		<file name="y">3</file>
+		<file name="c">2</file>
+		<file name="e">2</file>
+		<file name="q">2</file>
+		<file name="a">1</file>
+		<file name="b">1</file>
+		<file name="f">1</file>
+	</word>
+	<word text="containershowsidebar">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="dog">
+		<file name="doa">1</file>
+		<file name="dog">1</file>
+		<file name="dog.c">1</file>
+	</word>
+	<word text="example10">
+		<file name="aaa">2</file>
+		<file name="aaa.txt">2</file>
+		<file name="a0">2</file>
+		<file name="aa">1</file>
+		<file name="a.txt">1</file>
+		<file name="bb">1</file>
+		<file name="zz">1</file>
+		<file name=".astuff">1</file>
+		<file name=".zstuff">1</file>
+	</word>
+	<word text="example2">
+		<file name="a">1</file>
+		<file name="aaa">1</file>
+	</word>
+	<word text="example3a">
+		<file name="a">1</file>
+		<file name="aaa">1</file>
+	</word>
+	<word text="example30">
+		<file name="aaa">1</file>
+		<file name="a.txt">1</file>
+		<file name="b">1</file>
+		<file name="1">1</file>
+		<file name=".1">1</file>
+	</word>
+	<word text="previewpanevisibility">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="showpathbar">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="showsidebar">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="showstatusbar">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="showtabview">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="showtoolbar">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="sidebarwidth">
+		<file name=".ds_store">3</file>
+	</word>
+	<word text="windowbounds">
+		<file name=".ds_store">3</file>
+	</word>
+</fileIndex>

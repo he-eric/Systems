@@ -1,0 +1,117 @@
+Testcases:
+
+Firstly, we want to test if every error case is covered based on the requirements.
+
+netserverinit:
+
+- HOST_NOT_FOUND is set if port number or hostname is not found, wether if they are incorrect or if the server is not running. 
+
+netopen:
+
+- EACCES is properly set if the requested access to a file is denied due to permissions set
+- EINTR is properly set
+- EISDIR and ENOENT are set properly incase file requested is directory or doesn’t exit
+- EROFS is properly set incase attempting to pass write flag on read only file
+
+netread:
+
+- ETIMEDOUT is set if the client does not receive communication with server after 15 seconds
+- EBADF is properly set given a bad file descriptor 
+- ECONNRESET is set if a connection is interrupted while data is being transferred
+
+netwrite:
+
+- All three errnos are set properly and for the same reasons at netread
+
+netclose:
+
+- EBADF is set properly if trying to close a file descriptor that is bad (already closed or never opened)
+
+————————————————————————————
+
+Next we test if they work in single cases that are expected to work (since we tested errors already). Netopen has to work for others to work, so we tested it out to make sure it gave proper file descriptors and returned -1 on errors given filename and flags. With netopen, we are able to test the other functions.
+
+We created a test.txt to test our functions.
+
+netread: After the file has been given a file descriptor through open, netread successfully read n number of bytes (given as parameter) from the file and put into the buffer created to hold the read bytes.
+- netread(fd, buffer, 5) //read five bytes from fd into buffer
+
+netwrite: After the file has been given a file descriptor from open, netwrite successfully writes n bytes from the buffer into the file.
+- char* buffer = “hello”;
+- netwrite(fd,buffer,5);
+
+netclose: After a file has been opened and given a file descriptors and other functions like netread and netwrite have been called on them, netclose successfully closes the file descriptor. This is because if we try to call netread, netwrite, or netclose on that same file descriptor after it has been closed and not re-opened, an error saying bad file descriptor will be sent back.
+
+————————————————————————————
+
+Next we test more complex requests like multiple calls.
+
+  int fd = netopen("test.txt",O_RDWR);
+  char readbuf[20];
+  char* writebuf = “hello”;
+  netread(fd,readbuf,10);
+  netwrite(fd,writebuf,5);
+  netclose(fd);
+ 
+Our implementation successfully called all four functions. We successfully read 10 bytes from the file into readbuf and successfully wrote “hello” from writebuf into the file.
+
+———
+
+  int fd = netopen("test.txt",O_RDONLY);
+  char readbuf[20];
+  char* writebuf = "mouse";
+  netread(fd,readbuf,10);
+  netclose(fd);
+  fd = netopen("test.txt",O_WRONLY);
+  netwrite(fd,writebuf,5);
+  netclose(fd);
+
+
+We successfully closed the file descriptor, then re-opened it with different flags which allowed us to write to the file.
+
+———
+
+  int fd = netopen("test.txt",O_RDONLY);
+  char readbuf[20];
+  char* writebuf = "mouse";
+  netread(fd,readbuf,10);
+  netclose(fd);
+  fd = netopen("test2.txt",O_WRONLY);
+  netwrite(fd,writebuf,5);
+  netclose(fd);
+
+We were successful in working with multiple files and calling functions on them. This also worked with more than one function per file (we were able to call multiple read and writes on a file before closing it). We could also create two file descriptors and open two files at the same time and manipulate them.
+
+————————————————————————————
+
+Lastly, we use fork to make sure that the server can handle with multiple clients at the same time.
+
+  int pid = fork();
+
+  if (pid != 0) {
+    int fd = netopen("testfile2.txt",O_RDONLY);
+    char buf[BUF_SIZE];
+    netread(fd, buf, 10);
+    netclose(fd);
+    fd = netopen("testfile.txt",O_RDWR);
+    char *buff = "test";
+    netwrite(fd, buff, 4);
+    netclose(fd);
+    return 0;
+  }
+  else {
+    int fd = netopen("testfile.txt", O_RDWR);
+    char buf[BUF_SIZE];
+    netread(fd, buf, 5);                                                                                           
+    printf("buf: %s\n", buf);
+    char *buff = "bbb";
+    netwrite(fd, buff, 3);
+    netclose(fd);
+    return 0;
+  }
+
+
+Using this, we were able to test that multiple clients would be able to call these functions on their own files separately from the other clients. All four functions were successfully called on the files for their respective client.
+
+
+

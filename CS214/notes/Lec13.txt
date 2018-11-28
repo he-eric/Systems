@@ -1,0 +1,87 @@
+Compound statements
+Scope of variables declared in compound statements stay in the compound statement
+
+a = 5 b = 3
+a = 5 + 3 = 8;
+b = 8 - 3 = 5;
+a = 8 - 5 = 3
+
+Macros and compound statements { }
+#define SWAP(X, Y) do { \
+	typeof(X) __tmp = X; \
+	X = Y; \
+	Y = __tmp; } \
+	while (0) <---- semicolon not needed
+
+Macro - manipulate text tokens - before compile time
+X and Y don't have types; bits of syntax
+Able to deal with local variables
+
+#define CHECK_PTR(p) \
+	if (!p) { \
+	   perror("NULL PTR\n"); \
+	   exit(EXIT_FAILURE);
+	} 
+	
+Call exit if you're in a place where nothing more can happen
+
+Using Read Efficiently
+
+bytes = read(file_descriptor, buffer, length);
+What if my file > than my buffer
+A token in file that is > buffer
+
+char buf[BUFSIZE];
+char *pos;
+char *start;
+char *end;
+char *tail;
+
+int bytes;
+
+while ( !bytes = read(0, pos, end-pos) ) {
+
+      tail = buf + bytes;
+      
+      for (: pos != tail; ++pos) {
+      
+	if (isspace(*pos)) {
+	
+		if (start) {
+		
+			int len = pos - start;
+			char *token = malloc(len+1);
+			strncpy( token, start, len );
+			token[len] = NULL;
+			
+			do_something();
+			start = NULL;
+
+		}
+		
+		else if (!start) {
+
+		     start = pos;
+		
+		}
+
+	}	
+	if (start) {
+	   int len = tail - start;
+	   memmove(buf, start, len); //defined if ptrs overlapped
+	   pos = buf + len;
+	   start = buf;
+	}  
+	else {
+	     pos = buf;
+	}
+
+      }
+      
+      if (start)
+      	 int len = pos - start;
+	 char *token = malloc(len + 1);
+	 strncpy(
+	 
+
+}

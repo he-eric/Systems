@@ -1,0 +1,41 @@
+Ch11 sockets
+Ch12 pthreads
+
+what is a thread?
+process that shares heap different stack
+
+posix thread
+pthread_t thread id - what is it? probably a int; who knows
+
+how a thread begins
+pthread_create(address of variable to store pthread_id, attributes,
+		       function, argument)
+returns integer
+
+terminates thread immediatley
+pthread_exit(pointer to return value)
+
+implicitly end a thread when fnction returns
+
+wait for threadid to end; store return value
+pthread_join(threadid, &returnvalue)
+
+send a signal to a thread
+pthread_kill(threadid, signal)
+
+thread cannot be joined
+pthread_detach( threadid )
+
+mutex_t mute;
+pthread_mutex_init(&mut)
+two important things
+lock
+
+pthread_mutex_unlock(&mut)
+
+void do(arg)
+     lock
+     do
+     unlock
+
+all uses of do never interfere with each other in threads

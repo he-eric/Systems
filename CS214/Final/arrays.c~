@@ -1,0 +1,17 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int func(int x) {
+  int array[x];
+  array[x-1] = 10;
+  printf("%d\n", array[x-1]);
+  return 1;
+}
+
+int main() {
+
+  func(10);
+  
+
+
+}

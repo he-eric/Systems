@@ -1,0 +1,7 @@
+built-in sort function
+
+qsort( array, array_size, unit_size, compare_function )
+sorts anything, doesnt know what the array consists of
+
+compare_function should take const void *
+

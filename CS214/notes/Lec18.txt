@@ -1,0 +1,104 @@
+context of execution:
+data		registers
+instructions	functions
+
+fetch
+decode
+execute
+-> next instruction
+fetch
+decode
+execute
+-> next instruction
+...
+
+can trace one long unbroken thread of control
+
+instructions in text segment
+program counter -> holds address of next instruction
+
+what happens if you need another thread of control?
+when is one not enough?
+
+what is a blocking call?
+until function returns
+
+write(fd, buf, 2^30) might take a while; not sure how long itll take
+blocking    - keep working until its done; will not return until job done
+nonblocking - return before its done
+	      work during its time alotted; return work done in that time
+  	      control timesplices
+
+sometimes have to do a blocking call
+fork() - clone to do it
+
+thread - another stack in the same process
+another execution context living in the same process
+
+can only have one activation record at a time in one stack
+
+how to pass data in threads?
+pass function ptr, parameters
+shares heap, global vars
+
+transform blocking to nonblocking by creating thread
+
+two ways of manipulating data at the same time
+doesn't know time is running when execution context swapped for another
+inconsistent data possible
+
+thread1 reads data
+thread1 swapped out
+thread2 reads data
+thread2 manipulates data
+thread2 swapped out
+thread1 using inconsistent data
+
+ensure read and write consistency
+
+static status = 0;
+while (!status) {}
+status = 1;
+...
+status = 0;
+
+Doesnt work
+
+what can we do?
+running out of software
+synchronized 
+
+hardware
+test-and-set
+-check to see if data address is 0
+if so set to 1 and return 0
+else return 1
+
+mutex
+mutual exclusion
+guarentees
+0: lock will not return until have mutex
+1: locks are resolved in call order
+
+dangers
+sensitive to identity; only the thread that locks it can unlock it
+if the thread crashes without unlocking-
+sensitive to order
+lock THEN unlock
+lock and lock; blocks if locked; wiating for yourself to unlock
+
+up to programmer where mutex is used
+this region of code is locked
+
+barrier
+
+I/O
+
+how can a mutex fuck me over?
+deadlock
+1.O
+2.O
+3.O
+4.O
+
+(  )(  )

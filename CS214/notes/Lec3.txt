@@ -1,0 +1,48 @@
+1/24
+Exit codes
+     Success
+     return 0 
+     return EXIT_SUCCESS
+
+     Failure
+     return 1
+     return EXIT_FAILURE
+
+optional
+	int main() {...}
+	cant access arguments
+
+structs
+Example:
+struct point {
+       int x;
+       int y;
+};
+struct point p = {0,0};
+struct rectangle {
+       struct point topleft;
+       struct point botright;
+}
+struct rectangle r = {p, {100,100}};
+
+union intfloat {
+      int i;
+      float f;
+      char c[4];
+}
+union intfloat fi;
+fi.i = 25;
+fi.f = 1.0;
+
+struct safeintfloat {
+       int is_int;
+       union intfloat fi;
+}
+
+pointers
+void* - pointer to anything
+void *x; //an address
+int *p; //pointer to an integer
+
+typedef
+typedef (struct node*) LIST;

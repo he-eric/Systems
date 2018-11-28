@@ -1,0 +1,120 @@
+Synchonization in assignment 3
+ On the server
+ 2 files write to the same file at once...
+ in general
+  a global data structure
+  make sure threads are synchonized
+ 
+ Any data structure holding information about the states of the files being
+ accessed need to be synchonized
+
+ ExtensionA
+ Changing a data structure nobody else can have it
+ While changing it nobody else can read it
+ How might we go about designing this?
+ Use 2 semaphores - 1 for reader 1 for writer
+ 
+int num_readers
+int num_writers
+
+start_reading
+stop_reading
+
+start_writing
+stop_writing
+
+a client wants to write than wait for all readers to be done
+
+states
+no one reading or writing
+someoe writing
+one or more threads reading
+
+start_reading()
+if i want to start reading what are the requirements?
+ -no one is writing
+  -if someone is writing wait
+  -if no one is writing then
+ -increment readers
+
+start_writing()
+ check if anyone is reading or writing
+ pthread_mutex_lock(mutex); 
+ block until mutex is unlocked by another thread
+
+ while (is_writing || num_readers > 0)
+ if so, wait until readers and/or writers are done
+  if (is_writing)
+   pthread_cond_wait(done_writing, mutex)
+  if (num_readers > 0)
+   pthread_cond_wait(done_reading, mutex)
+ set is_writing
+ is_writing = 1;
+ pthread_mutex_unlock(mutex)
+
+stop_writing()
+ pthread_mutex_lock(mutex)
+ is_writing = 0;
+ pthread_mutex_unlock(mutex)
+
+problem if 1 waiting to write but multiple threads waiting to read
+use broadcast
+wakes up every thread
+whichever thread grabs the mutex goes first
+
+clarifications
+ netopen('here/is/some/file.txt', mode)
+ just pass this to open
+
+terrible design if writing a real system
+
+netopen(file, O_RDONLY or O_RDRW)
+no permission to open file; return an error 
+file doesnt exist; error
+open a directory; error
+
+netopen(file, O_WRONLY or RDWR)
+additional stuff
+write 10 bytes in a 100 byte file
+first 10 bytes overwritten; last 90 remain the same
+
+means clients cannot create new files
+
+getaddrinfo(const char * hostname, const char * portno, 
+            const struct addrinfo *hints, //sets flags, what addresses you want
+            struct addrinfo **res)
+
+what is a struct addrinfo?
+bunch of fields
+can set em all to 0 with memset
+ex: memset(&hints, 0, sizeof(struct addrinfo))
+hints.ai_family = PF_INET
+hints.ai_socktype = SOCK_STREAM
+hints.ai_flags = AI_PASSIVE //if starting a server
+
+struct addrinfo *res;
+getaddrinfo(NULL, portno, &hints, &res)
+pass null for hostname 
+check if res is a null pointer (if it is report an error)
+
+socket_fd = socket(res->ai_family, res->ai_socktype, res->ai_protocol)
+
+err = bind(socket_fd, res->ai_addr, res->ai_addrlen)
+
+err = listen(socket_fd, backlog)
+
+struct sockaddr_storage client_addr
+socklen_t client_addr_len
+
+client_addr_len = sizeof(struct sockaddr_storage)
+
+connection_id = accept(
+	      	socket_fd,
+		(struct sockaddr *) &client_addr,
+		&client_addr_len)
+
+getnameinfo(...)
+
+struct sockaddr addr
+socklen_t addr_len
+

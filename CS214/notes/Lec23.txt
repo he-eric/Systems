@@ -1,0 +1,123 @@
+Distributed systems
+A group of computers that communicate with each other
+Any group of distinct things communicating
+Ex: components of a computer
+    communication through a system bus
+Ex: internet
+    amazon
+    google
+    content delivery networks
+
+Abstract systems that communicate through the web
+Operate at diff scales and offer diff features
+
+Importantly, features:
+
+	     latency - how long it takes to communicate 
+	     inside a computer...pretty fast
+	     
+	     bandwidth - just how much data sent per unit of time
+	     Ex: fastest bandwith ways cali -> NY
+	     	 load a whole bunch of data onto a truck and drive
+		 high latency though because it takes days
+		 peta byte range
+
+	     reliability - if I send a message how likely are you to receive it?
+	     inside a computer little latency, low bandwidth, highly reliable
+
+case study about reliability
+     2 generals: Alice and Bob
+     Armies parked outside city, cant see each other
+     Dangerous valley between them	     
+     Want to coordinate a attack at the same time
+     Will not attack if other will not attack at the same time
+     No phones; send messengers
+     Alice sends a message to Bob: attack at noon
+     Will the messenger arrive?
+     From Alice's perspective: Bob:knows	Bob:doesnt know
+     Could resolve by having Bob sending a confirmation
+     How will Bob know Alice received his confirmation?
+     Alice sends a confirmation of his confirmation...and so on
+     No finite messages will guarentee both generals will attack at the same time
+     
+byantine generals problem
+	   n generals
+
+TCP - three way handshake
+    2 machines: Alice, Bob
+    Alice sends a message I would like to start a connection
+    Bob: I acknowledge
+    Alice replies I acknowledge your acknowledgement
+    Now we are connected
+
+What if last message gets lost?
+Timer will time out: connection will fail
+This is a 3 way handshake (also 2-way, 4-way handshakes)
+This is what happens when you call socket(), connect()
+
+Distrubuted system
+2 processes running on diff hosts: Alex, Betty
+Alex is a program
+     Will communicate with the network stack
+     Part of the computer; talks to parts of the system; talks to another computer, Betty
+
+On each port host is a port
+Send a message with TCP, UDP, will have a port associated with it
+Port: talk to a specific process on the machine
+
+Betty creates a socket
+Binds that socket to port
+Betty calls accept
+Create a new socket describing that connection
+Betty may have several sockets for several connections
+
+Alex calls connect
+
+Application level
+	    Have a place to send data and receive data
+	    A write stream and a read stream
+
+close shutsdown both sides/streams
+Even if data has been sent in the process of closing will not accept
+Another process may open a socket on the same port closed; will accidently recieve that
+OS will close that port for some time
+
+shutdown()
+	shut down one or more streams on a socket
+	send a message 
+	Alex calls shutdown	
+	Betty will know there will be no more messages to accept
+	
+close happens to data structures in the computer 
+shutdown is network/message
+
+UDP/datagrams
+Sends and hopefully arrives
+Cant be sure if message received
+Chunk of data
+"Framing"
+
+TCP/Sock stream
+more powerful
+Stream interface; write bytes; I will determine size of chunks sent; 
+make sure reliably sent
+Sends a sequence number
+checks traffic
+
+procedure calls
+netopen
+netread
+...
+remote procedure calls vs procedure calls
+       local calls arent likely to fail
+       remote calls more likely to fail than local calls
+       
+accept blocks until connection
+dont call accept until you know theres a connection coming
+select()
+poll() - array of structs, length, timeout
+return when something has happened or timeout
+
+set socket to be nonblocking
+filecontrol
+	

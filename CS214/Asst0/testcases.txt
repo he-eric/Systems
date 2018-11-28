@@ -1,0 +1,28 @@
+﻿Spaces in the output denote a new line
+Order
+input: “a c b d”                                        output: “a b c d”
+input: “a Z z A”                                output: “A Z a z”
+input: “zAM Zam”                                output: “Zam zAM”
+Input: “hello HELLO Hello”                        output: “HELLO Hello hello”
+input: “Zam butter nUTTER borp”                output: “Zam borp butter nUTTER”
+
+
+Separators
+input: “a000b....c????d”                        output: “a b c d”
+input: “ d   c    b       a      ”                        output: “a b c d”
+input: “111111a A11111”                        output: “A a”
+Input: “2312%hello#@#WORld12)))”                output: “WORld hello”
+input: “d;;;’a%  c!@#b[z]”                        output: “a b c d z”
+
+
+Duplicates
+input: “a c b d a”                                output: “a a b c d”
+input: “Duplicate DUPLICATE Duplicate”        output: “DUPLICATE Duplicate Duplicate”
+Input: “hello&my#@ Name (is) ^^hello”        output: “Name is hello hello my”
+
+
+Incorrect input
+input: hello world                                output: “Too many arguments”
+Input: (no input)                                 output: “”
+Input: “123456789...”                                output: “”
+Input: “        “                                        output: “”

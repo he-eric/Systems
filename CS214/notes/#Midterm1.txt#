@@ -1,0 +1,278 @@
+Data structures
+
+Pointers
+Structs
+	Three ways:
+	struct mystruct
+	{
+		int int_member;
+		double double_member;
+		char string_member[25];
+	} variable;
+-----------------------------------------
+	typedef struct 
+	{
+		...
+	} Mystruct;
+
+	Mystruct structure;
+-----------------------------------------
+	Allows reference to itself; used in linked lists, trees
+	typedef struct Mystruct
+	{
+		...
+		struct Mystruct *pMystruct
+	} Mystruct;
+-----------------------------------------
+Unions
+	One or the other since the datatypes inside occupy the same memory
+	Note that size of a union is the size of its largest data type
+	union {
+	      int i;
+	      double d;
+	}
+
+sizeof() returns the size of a datatype in BYTES 
+
+*******************************************
+
+Man pages
+
+Pointers increment by the size of type
+	 int *ptr; ptr++; increment by 4 bytes
+	 char * ptr; char++; increment by 1 byte
+
+	 Increment value at pointer
+	 int *ptr; (*ptr)++;
+-----------------------------------------
+Type extend
+
+enum
+
+Example
+	enum week {Monday, Tuesday, Wednesday, Thursday, Friday};
+	week day = Monday;
+	
+	switch (day) {
+	       case Monday :
+	       	    statement
+		    break
+	       case Tuesday: 
+	       	    ...
+	       case Wednesday:
+	       	    ...
+	       ...
+	       default:
+		    ...
+	}
+
+-----------------------------------------
+typedef
+	Examples:
+	typedef char* chpoint;
+	chpoint p = 'a' <==> char *p = 'a'
+
+	Can make structs convenient
+	
+	struct point {
+	       int x;
+	       int y;
+	}
+
+	struct point location0 = {1, 2};
+
+	typedef struct point coord;
+	coord location0 = {1, 2}
+	
+	struct point location0 = {1, 2} <==> coord location0 = {1, 2}
+	
+	Compact into below
+	---------------------
+	typedef struct point {
+		int x; 
+		int y; 
+	} coord;
+	---------------------
+
+******************************************
+
+Typedef => syntactic sugar; make code easier to understand
+
+enum
+	enum week {Monday, Tuesday, Wednesday...Friday};
+	enum week day = Monday;
+
+Typdef
+	typedef 
+		enum week {Monday, Tuesday, Wednesday...Friday}	
+		day;
+
+******************************************
+
+Const qualifiers
+      Immutable integer
+      const int *variable 
+      int const *variable
+
+Const pointers
+      Immutable address
+      int *const variable
+
+Immutable address and pointer
+      int const * const variable
+
+------------------------------------------
+
+Dynamic memory
+
+malloc(), free(), realloc(), calloc()
+	  
+	  allocate memory for a pointer
+	  ptr = (type *) malloc( sizeof( type ) * amount )
+
+	  reallocate memory for already allocated pointer
+	  ptr = (type *) realloc( sizeof(type) * newamount )
+
+	  allocate array of pointers
+	  ptr = (type *) calloc( amountofthings, sizeof( type ) )
+
+******************************************
+
+fprintf ( FILE *stream, "%s %d", __FILE__, LINE__);
+
+Check if header already included
+#ifndef HEADER_FILE
+#define HEADER_FILE
+#endif
+
+memcpy(), memncpy(), strfuncs
+memcpy(void *dest, const void *src, size_t n)
+
+switch( expression )
+ {
+	case 1: statement
+	break;
+	case 2: statement
+	break
+	default: statement
+ }
+
+Format
+%s
+%c
+%d
+%x
+%X
+%u
+
+scanf, fscanf, sscanf
+
+scanf - read input from stdin
+      scanf("%s", char *dest)
+      Success - return bytes read
+      	      - return -1
+
+fscanf - read input from any file stream
+       fscanf(FILE *stream, "%s %s %d", char *dest1, char *dest2, &int)
+       Success - number of inputs successfully matched and assigned, >= 0
+
+sscanf - read input from string to strings/ints...
+       sscanf(char *src, "%s %s %d", char *dest1, char *dest2, &int)
+
+*******************************************
+
+Error handling
+fprintf(stderr, "your error message at %s %d\n", __FILE__, __LINE__);
+
+*******************************************
+
+Preprocessor-allows for
+		    header files
+		    macro expansions
+		    conditional compilation
+		    Give special instructions to compiler
+
+Syntax checking
+Object code - Compilation[C->Assembly] Assembly[Assembly->Machine]
+Linking - Combine separate object codes into one program by integrating libraries
+
+-------------------------------------------
+
+Function pointers
+
+int minuesone(int num) {
+    return num-1;
+}
+
+int (*functionptr)(int) = minusone;
+int two = (*functionptr)(3); <==> int two = functionptr(3);
+
+*******************************************
+
+Linux commands
+
+ps - list processes
+top - list and update processes
+kill - kill a program with its pid
+
+cat - can take more than one arg; concatenate and print files
+more - print file to screen
+less - print file; allow forward backward movement
+
+chown - change file owner and group 
+      chown <new_owner_name> <filename>
+chmod - change permission bits
+      chmod <permission_bits> <filename>
+      
+      owner group all
+      rwx   rwx   rwx
+      000   000   000
+
+      chmod 777 filename
+
+      owner group all
+      rwx   rwx   rwx
+      111   111   111
+
+      Decimal 7 => binary 111
+
+touch - change file access and modification times
+
+ls - list directory contents
+cd - change directory
+pwd - list current directory
+
+> - OUTPUT > FILENAME
+|
+
+od - octal dump
+   interpret file as certain type and print values
+   od filename -> octals
+   od -a filename -> characters
+   od -b filename -> bytes
+
+grep - search
+     grep <Pattern> <filename>
+
+which - filepath
+
+*******************************
+
+Stages of compilation
+
+preprocessor -> compilation -> assembly -> linking
+
+preprocessor
+	Lines with # are interpreted as preprocessor commands
+	Own syntax and semantics     
+	define macros
+
+compilation
+	Translated to assembly
+
+assembly
+	Assembler translates assembly to machine code
+	
+Linking
+	provides paths to libraries
+

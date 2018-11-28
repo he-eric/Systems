@@ -1,0 +1,108 @@
+Tokens larger than buffersize
+not in a token
+    in a token
+
+multiprocessing
+multiple processors on a computer
+two things to do
+split into two and each do half of the work
+
+difficult and overhead starting with the whole process
+safety too; if main process crash but child doesnt
+
+fork()
+duplicate process; everything is the same
+return is different
+parent receive child id; useful; wait until child terminates
+ex: run another command while process running
+
+easier to do everything at once with one process?
+multithreading
+run on a single process or multiple CPUs
+but all share memory space; like global variables and whatever structures
+maintain data structures
+threads can call threads
+threads live any amount of time
+for proficiency call all threads at beginning
+
+#include pthread.h>
+gcc -lpthread //link pthread library since not part of standard c library
+
+pthread_create(pthread *thread (id), ____, function ptr, arg for function)
+ex:
+int main() {
+
+pthread_t thread_id, thread_id2;
+int x = 1;
+int y = 2;
+my_struct *ret;
+
+int rc = pthread_create(&thread_id, NULL, my_thread, &x);
+(void) pthread_create(&thread_id2, NULL, my_thread, &y);
+pthread_join(&thread_id, &ret); //if nondetached thread wait for thread to end
+pthread_join(&thread_id2, NULL);
+//threads done
+
+}
+
+if thread return a value; could pass pointer arg to pthread_join
+thread creates a struct and passes address to ret in main process
+rc is 0 if everything is fine or error
+2 subthreads
+
+void *my_thread(void *arg) {
+   int my_arg = *(int *) arg;
+   struct *x = malloc(sizeof(my_struct));
+   x->... = ...;
+   return (void *)x;
+}
+
+call to my_thread; my_thread executes off to the side
+do computations and read from files
+one thread doing work other reading from diskdrive 
+
+back in the 80s
+computer had one thread; if printing cant do anything with computer
+
+how many threads are available for use?
+command in linux
+
+main program calling threads do its own thing?
+sure
+
+if main returns
+detached and nondetached threads
+
+can you pass multiple args to pthread_create?
+no but could fake it; create a struct with pthreads
+
+can you modify global variables in a thread?
+yes; undefined
+
+when main dies all threads dies
+ways to setup if threads running main runs
+
+pthread_attr_init
+
+synchronization
+what happens when two threads write to a global variable?
+Data race
+make only one thread oeprating at a time:
+pthread_mutex_t lock * = malloc(...); //global variable
+pthread_mutext_init(&lock, NULL);
+
+threadA
+pthread_mutex_lock(lock); 
+... critical section
+pthread_mutex_unlock(lock);
+
+threadB
+~~~~~~~
+~~~~~~~
+
+if threadB tries to lock while another thread is already locked...wait
+
+what happens if you try to obtain the lock if you already have the lock?
+deadlock; waits forever
+get around with recursive lock
+

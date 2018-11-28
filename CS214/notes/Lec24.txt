@@ -1,0 +1,125 @@
+OSI Network model - seven layers
+physical - 
+link - abstract communication
+     machines connected on a link
+network - IP communication between networks
+transport - communication between processes on different machinese
+	  TCP UDP SCTP
+
+session
+	responsible for: when do we start talking? details for comm
+	setup, teardown, sync, communication across diff ports
+	Extension B: data sent to multiple ports
+
+presentation
+	binary formatting of messages
+
+application
+	abstract
+	read 500 bytes from fd -5
+
+in the presentation layer decide how to express command read
+many possible presentations for the same application
+
+ex: comm be encrypted
+    encrpyt 
+
+session: coordination
+
+read(-5, buf, 800)
+
+"read -5 buf 800"
+
+Physical
+Ethernet/Link Headers - 
+IP Headers - which machine message goes to, message size
+TCP Headers - port, sequence #s
+Message
+
+Unlike the 4level internet model these are abstract
+
+Fault models
+failstop - processors fail - another processor will notice
+crash - processor fail - not detectable to other processors
+byzantine - processor fails by arbitrary behavior
+	  something goes wrong anything happens
+	  instead of getting no response may get wrong response
+
+can extend fault models to distributed systems
+
+project:
+	server - accepts response, sends response
+	client - request, get response
+
+if server enters infinite loop how does client know
+client doesnt know 
+
+failstop - get an error from server 
+	 server isnt running
+crash - server crashes connection closes
+byzantine - server gets itself into an inconsistent state
+	  
+thus no network is reliable
+live with degree of uncertainty
+
+int main() {
+    fork() 2 processes call fork() 4 times
+    fork() 4 processes call fork() 3 times
+    fork() 8  
+    fork() 16
+    fork() 32
+    
+    total of 32 processes    
+
+    char **args = {"arg1", "arg2", "arg3",...};
+    execv("my_client",args);
+}
+
+n forks
+2^n processes
+
+waitpid - suspend until process completes
+	returns process id of completed process
+
+if fork returns 0 youre the child process go exec and do something
+
+interrupts
+computer doing work
+get information from disk or network
+2 choices
+send of request from disk: give me byte 50: synchronous operation
+     time it takes for processor to get information from disk slow
+typically do asynchrounous:
+	  send off request and then do something
+	  how do you know request is done
+	  
+interrupt happens that interrupts program
+processor doing something
+event happens that needs to be dealt with
+
+notice computers run many processes
+switching back and forth with interrupts
+pre emptive multi-tasking
+
+hardware interrupts
+software interrupts - signals
+
+Kill - sends signal to process
+
+install signal handling
+signal handler - function
+opposite of exec
+exec never returns
+signal handler never called but returns
+
+void signal_handler(int);
+signal(SIGINT, signal_handler);
+
+void (*sigh)(int);
+
+sigh = signal(SIGINT, NULL);
+
+signals good for interrupting 
+server running
+call accept
+

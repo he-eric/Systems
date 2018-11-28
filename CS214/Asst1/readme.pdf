@@ -1,0 +1,80 @@
+Design:
+
+We designed our malloc with the intention of using as little space as possible for our headers. Thus, we 
+chose our header sizes to be 2 bytes, the size of a short. Since our heap is only 5000 bytes, our header
+can easily store the allocation type with 1 bit and its size with 15 bits. 
+
+We created an initmem() function to initalize the heap with 1 header of size (MAXIMUM_SIZE - HEADER_SIZE).
+
+We then created our malloc function. Our malloc function uses a malloc_helper function. We made a helper
+function to accomodate the need for a coalesce function. Thus, our malloc uses malloc_helper and coalesce
+to allocate memory. The actual searching is done inside malloc_helper. 
+
+   Malloc_helper:
+	The design of the searching of malloc_helper is linear. We start at the beginning of the heap,
+	check if the block is free and if the block is large enough. If any of the two checks fail 
+	malloc_helper increments to the next block by adding size+header_size. Reaching the end of the 
+	heap will return NULL
+   Coalesce:
+	mymalloc calls coalesce when the first call of malloc_helper fails. Starting at the front of the 
+	heap, coalesce searches for adjacent free blocks to merge. When the end of the heap is reached 
+	coalesce ends.
+   myfree:
+	Myfree is linear in nature as well. It will take a pointer and attempt to free that pointer only
+	if it is in the heap and it points to a header. Freeing is a easy task as it only entails 
+	changing the allocation type of the block by using PUT and PACK, macros defined below
+
+Macros:
+   
+In both malloc_helper and Coalesce we use macros. 
+   GET - Given a pointer, casts it to a unsigned short pointer and dereferences it
+   PUT - Given a pointer and a value, sets the pointer to hold that value
+   PACK - Given a unsigned short size and a alloc type, PACK saves the alloc type to leftmost bit of size 
+   	  thus packing information into 2 bytes
+
+Workload Data:
+
+One iteration of running memgrind.c is documented below:
+Case A: 0.000354
+Case B: 0.000990
+Case C: 0.001620
+Case D: 0.002064
+Case E: 0.003115
+Case F: 0.001340
+
+As expected workload A ran faster than workload B. Workload B entails running two for loops of length 150
+twice while workload A only runs one for loop once.
+
+As expected workload C ran faster than workload D. Workload C entails randomly mallocing 1 byte 150 times
+or freeing a byte. Issues with payload requests are not a concern since the worst case is there are 150
+mallocs in a row which means 150 headers. 
+	   
+	150headers * HEADER_SIZE + 150bytes = 450bytes
+
+However, workload D chooses an allocation size of 1-64 bytes thus the worse case scenario is 150 mallocs in
+a row with every malloc entailing 64 bytes. This is beyond our memory capacity thus we need to ensure there
+are checks within workload D that free previous pointers to allow a 150 total mallocs. Every malloc will
+need to be checked if it returned NULL or not thus slowing workload D slightly.  
+
+Unexpected result were workloads E and F. Workloads E and F modeled workloads C and D in that they 
+randomly chose between malloc or free except that they randomly choose a pointer to free. In workloads C and
+D our implementations used an array of size 150 pointers. If we needed to free we simply looked at the 
+current index, decremented once, and freed the pointer. In workloads E and F we randomly chose an index to
+free. Given that workloads E and F follow the same exact routine, we initally surmised that workload F 
+would take slightly longer since it would entail the possibility of needing to print error statements
+when space ran out. The results were horrifying. In this iteration of memgrind, workload F ran 2.3 times
+as fast as workload E. In an attempt to explain the results we tried to isolate variables that might have 
+made workload F faster. One way was to decrease the random sizes from 1-64 to 1-30. The results slowed 
+workload F considerably. (Note: The memgrind.c that we hand in uses 1-64 bytes). 
+
+Possible Explaination
+Realizing that there was a correlation between increasing random allocation sizes and speed we tested 
+workload F by setting malloc to 1 byte only. This made workload F slower than workload E. We then slowly
+increased the allocation size to test the correlation. Speed continued to increase as we increased the size.
+We then tested this with randomly choosing allocation sizes. As we went from 1-10, 1-20, 1-40, and 1-64
+the workload speed of F increased. From these results we surmised that our coalesce was working exactly as intended. Lowering allocation size meant that our my_malloc helper function rarely failed. Thus, every search
+took longer and longer as the number of allocated blocks increased. Increasing the allocation size meant
+that our my_malloc helper function failed more often which in turn would call coalesce more often. This 
+meant we did not need to search farther into our heap for a free block. We coalesced previous free blocks
+near the beginning of our heap thus creating a scenario where there were free blocks of large enougn size
+very near the beginning of our heap enabling our search to be faster.

@@ -1,0 +1,35 @@
+networks
+
+application - HTTP
+transport   - TCP
+network     - IP
+link        - ethernet, wifi
+
+what is a link
+two computers and a cable, linked computers
+
+ethernet - special device hub - 
+           send message to everyone
+           switch
+           send message to recipient
+every computer has an address
+every message has a header - 
+
+network
+inter network -connection between two networks
+
+IP4 - 128.1.2345
+IP6
+
+address coming from
+address going to
+data
+packet
+IP - best effort delivery system
+
+make sure all packets arrive
+make sure arrive in right order
+
+sock_datagram TCP - the above 
+sock_stream   
+
